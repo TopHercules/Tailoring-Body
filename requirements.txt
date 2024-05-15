@@ -1,6 +1,6 @@
 opencv-python
 numpy
-math
+python-math
 flask
 scikit-image
 mediapipe
