@@ -1,0 +1,7 @@
+opencv-python
+numpy
+math
+flask
+scikit-image
+mediapipe
+os
