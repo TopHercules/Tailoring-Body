@@ -4,4 +4,3 @@ python-math
 flask
 scikit-image
 mediapipe
-os-sys

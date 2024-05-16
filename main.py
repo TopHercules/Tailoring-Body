@@ -150,7 +150,7 @@ def index():
         result["shoulder"] = int(get_white_points(mask_front, mark[11], mark[12]) * scale)
         
         # Bust (Armpit to armpit across the breasts)
-        result["armpit2armpit"] = int(get_distance_between_points(mark[12], mark[11]) * 1.2 * scale)
+        result["bust"] = int(get_distance_between_points(mark[12], mark[11]) * 1.2 * scale)
         
         # Chest (Round the chest area to the back - 360 degrees)
         sFront = (get_distance_between_points(mark[12], mark[11]) * 2 + get_distance_between_points(mark[24], mark[23])) / 3
@@ -158,10 +158,10 @@ def index():
         result["chest"] = int((sFront + sSide) * 2 * 0.9 * scale)
         
         # Shoulder to Under Bust (Vertical measurement)
-        result["shoulder"] = int(get_white_points(mask_front, mark[11], mark[12]) * scale)
+        result["shoulder2under_bust"] = int(get_white_points(mask_front, mark[11], mark[12]) * scale)
         
         # High Waist (abdomen to waist)  
-        result["abdomen2waist"] = int(((mark[23][1] + mark[24][1]) / 2 - (mark[11][1] + mark[12][1]) / 2) / 2 * scale)
+        result["high_waist"] = int(((mark[23][1] + mark[24][1]) / 2 - (mark[11][1] + mark[12][1]) / 2) / 2 * scale)
         
         # Waist (Above bottom)
         sFront = (get_distance_between_points(mark[12], mark[11]) + get_distance_between_points(mark[24], mark[23]) * 2) / 3
@@ -172,7 +172,7 @@ def index():
         # Hips (round the bottom)
         sFront = get_white_points_from_id(mask_front, 2, (mark[24][1] + mark[23][1]) / 2)
         sSide = get_white_points_horizontal_line(mask_front, (mark[24][1] + mark[23][1]) / 2)
-        result["hip"] = int((sFront + sSide) * 2 * 0.9 * scale)
+        result["hips"] = int((sFront + sSide) * 2 * 0.9 * scale)
         
         # Thigh (of one leg)
         avg = ((mark[24][1] * 2 + mark[26][1]) / 3 + (mark[24][1] * 2 + mark[26][1]) / 3) / 2
@@ -197,15 +197,15 @@ def index():
         
         # Bust Point (From the armpit to top of the breast)
         avg = get_distance_between_points(mark[12], mark[11]) / 4 * 1.2
-        result["armpit2breast"] = int(avg * scale)
+        result["bust_point"] = int(avg * scale)
         
         # Arm Hole (The socket where arm connects to the shoulder) 
         avg = (get_white_points_from_id(mask_front, 1, mark[14][1]) + get_white_points_from_id(mask_front, 3, mark[13][1]))
-        result["armHole"] = int(avg * scale)
+        result["arm_hole"] = int(avg * scale)
         
         # Round Sleeves (the mouth or end of the sleeve - Short and long i.e elbow area or wrist area of the hand)
         avg = (get_white_points_from_id(mask_front, 1, mark[16][1]) + get_white_points_from_id(mask_front, 3, mark[15][1]))
-        result["rSleeve"] = int(avg * scale)
+        result["round_sleeve"] = int(avg * scale)
         
         # Tummy Height (Under the breast to the waistline)
         sFront = (get_distance_between_points(mark[12], mark[11]) + get_distance_between_points(mark[24], mark[23]) * 2) / 3
@@ -247,11 +247,11 @@ def index():
             
             # Long Sleeve (from the shoulder socket/Arm hole to the wrist)
             avg = get_distance_between_points(mark[12], mark[14]) + get_distance_between_points(mark[14], mark[16]) + get_distance_between_points(mark[11], mark[13]) + get_distance_between_points(mark[13], mark[15])
-            result["lSleeve"] = int(avg / 2 * scale)
+            result["long_sleeve"] = int(avg / 2 * scale)
             
             # Short sleeve (from the shoulder socket/Arm hole to the elbow)
             avg = get_distance_between_points(mark[12], mark[14]) + get_distance_between_points(mark[11], mark[13])
-            result["sSleeve"] = int(avg / 2 * scale)
+            result["short_sleeve"] = int(avg / 2 * scale)
             
             # Cuflink area (same as wrist hole as explained below)
             cv2.imwrite("mask.png", mask_front)
@@ -260,11 +260,11 @@ def index():
             
             # Arm Hole (The socket where arm connects to the shoulder) 
             avg = (get_white_points_from_id(mask_front, 1, mark[14][1]) + get_white_points_from_id(mask_front, 3, mark[13][1]))
-            result["armHole"] = int(avg * scale)
+            result["arm_hole"] = int(avg * scale)
             
             # Round Sleeves (the mouth or end of the sleeve - Short and long i.e elbow area or wrist area of the arm)
             avg = (get_white_points_from_id(mask_front, 1, mark[16][1]) + get_white_points_from_id(mask_front, 3, mark[15][1]))
-            result["rSleeve"] = int(avg * scale)
+            result["round_sleeve"] = int(avg * scale)
             
             # Chest (round the chest area to the back)
             # sFront = get_white_points_from_id(mask_front, 2, (mark[12][1] + mark[11][1] + (mark[23][1] + mark[24][1]) * 2) / 6)
@@ -299,7 +299,7 @@ def index():
             
             # Leg hole (Round the ankle - Trouser opening)
             avg = get_white_points_from_id(mask_front, 1, mark[28][1]) + get_white_points_from_id(mask_front, 2, mark[27][1])
-            result["legHole"] = int(avg / 2 * 3.14 * 0.8 * scale)
+            result["leg_hole"] = int(avg / 2 * 3.14 * 0.8 * scale)
     # except:
     #     delete_images(id)
     #     flash("Calculation is not correct.")
