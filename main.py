@@ -6,6 +6,7 @@ import os
 from image_process import segment_body as segment, get_landmark
 from image_measure import measure_height as get_height_in_image
 from skimage.draw import line
+import PredictHeight.predict_height as height
 
 def delete_images(id):
     os.remove(f'front{id}.png')
@@ -72,20 +73,15 @@ app.secret_key = 'Tailoring App'
 def index():
     print("start")
     if request.method == 'POST':
-        if 'height' in request.form:
-            realHeight = float(request.form.get('height'))
-        else:
-            flash("Input the height of the person")
-        
+        # if 'height' in request.form:
+        #     realHeight = float(request.form.get('height'))
+        # else:
+        #     flash("Input the height of the person")
+
         if 'gender' in request.form:
             gender = request.form.get('gender')
         else:
             flash("Input the gender of the person")
-        
-        # if 'weight' in request.form:
-        #     weight = float(request.form.get('weight'))
-        # else:
-        #     flash("Input the height ")
         
         if 'front' not in request.files:
             flash("You didn't upload the front image. Please upload the front image")
@@ -139,6 +135,14 @@ def index():
     if len(landmark_front) != 33 or len(landmark_side) != 33:
         delete_images(id)
         flash("Please capture the full body image")
+    
+    # Estimate the height
+    try:
+        realHeight = height.predict(f'front{id}.png')
+        print(realHeight)
+    except:
+        delete_images(id)
+        flash("Error occured during the height estimation")
     
     scale = realHeight / front_img_height
     mark = landmark_front
@@ -254,7 +258,6 @@ def index():
             result["short_sleeve"] = int(avg / 2 * scale)
             
             # Cuflink area (same as wrist hole as explained below)
-            cv2.imwrite("mask.png", mask_front)
             avg = (get_white_points_from_id(mask_front, 1, mark[16][1]) + get_white_points_from_id(mask_front, 3, mark[15][1]))
             result["cuflink"] = int(avg * scale)
             

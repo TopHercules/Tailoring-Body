@@ -1,5 +1,5 @@
 image
 result.jpg
 __pycache__
-model
+model/best.pth
 mask.png

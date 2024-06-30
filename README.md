@@ -20,12 +20,11 @@ This Flask backend serves as the core of a tailoring application. It enables use
 
 ### Endpoints
 
-- **POST `/`**: This endpoint accepts front and side images of a person's body along with additional parameters like height and gender. It processes the images and returns measurements of various body parts.
+- **POST `/`**: This endpoint accepts front and side images of a person's body along with additional parameters and gender. It processes the images and returns measurements of various body parts.
 
     - **Parameters**:
         - `front`: Front image of the person's body.
         - `side`: Side image of the person's body.
-        - `height`: Height of the person.
         - `gender`: Gender of the person.
 
     - **Response**: JSON object containing measurements of different body parts.
