@@ -12,7 +12,7 @@ def delete_images(id):
     os.remove(f'front{id}.png')
     os.remove(f'side{id}.png')
 
-def find_index():
+def find_index(): 
     cnt = 0
     while os.path.exists(f'front{cnt}.png'):
         cnt = cnt + 1
@@ -311,4 +311,5 @@ def index():
     return jsonify(result)
     
 if __name__ == "__main__":
+    height.load_model()
     app.run(host = "0.0.0.0", port = 8000)
