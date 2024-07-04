@@ -4,14 +4,12 @@ import torch
 from torchvision import transforms
 from network import UNet as HUNet
 
-global model
-
 def load_model():
     model_h = HUNet(128)
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     pretrained_model_h = torch.load('model/best.pth', map_location=device)
-    if torch.cuda.is_available():
-        model_h.load_state_dict(pretrained_model_h["state_dict"])
+    # if torch.cuda.is_available():
+    model_h.load_state_dict(pretrained_model_h["state_dict"])
 
     global model
     if torch.cuda.is_available():

@@ -68,16 +68,10 @@ def get_distance_between_points(start, end):
 
 app = Flask(__name__)
 app.secret_key = 'Tailoring App'
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/measure', methods=['GET', 'POST'])
 
 def index():
-    print("start")
     if request.method == 'POST':
-        # if 'height' in request.form:
-        #     realHeight = float(request.form.get('height'))
-        # else:
-        #     flash("Input the height of the person")
-
         if 'gender' in request.form:
             gender = request.form.get('gender')
         else:
@@ -96,10 +90,10 @@ def index():
         img_front.save(f'front{id}.png')
         img_side.save(f'side{id}.png')
         
-        if(img_front.name == ''):
+        if img_front.name == '':
             delete_images(id)
             flash("Can't find the front image. Please upload the front image again")
-        if(img_side.name == ''):
+        if img_side.name == '':
             delete_images(id)
             flash("Can't find the side image. Please upload the side image again")
     else:
@@ -148,7 +142,8 @@ def index():
     mark = landmark_front
     
     result = {}
-    # try:
+    result["height"] = int(realHeight)
+    
     if gender == "female":
         # Shoulder (Shoulder to shoulder)
         result["shoulder"] = int(get_white_points(mask_front, mark[11], mark[12]) * scale)
