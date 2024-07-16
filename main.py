@@ -8,6 +8,10 @@ from image_measure import measure_height as get_height_in_image
 from skimage.draw import line
 import PredictHeight.predict_height as height
 
+from PIL import Image
+import pillow_heif
+import io
+
 def delete_images(id):
     os.remove(f'front{id}.png')
     os.remove(f'side{id}.png')
@@ -66,6 +70,20 @@ def get_distance_between_points(start, end):
     distance = math.sqrt((end[0] - start[0])**2 + (end[1] - start[1])**2)
     return distance
 
+def heif2png(file):
+    # Read the image file
+    heif_file = pillow_heif.read_heif(io.BytesIO(file.read()))
+    # Convert HEIC to a format that PIL can handle
+    image = Image.frombytes(
+        heif_file.mode,
+        heif_file.size,
+        heif_file.data,
+        "raw",
+        heif_file.mode,
+        heif_file.stride,
+    )
+    return image
+
 app = Flask(__name__)
 app.secret_key = 'Tailoring App'
 @app.route('/measure', methods=['GET', 'POST'])
@@ -87,9 +105,13 @@ def index():
         img_front = request.files['front']
         img_side = request.files['side']
         
-        img_front.save(f'front{id}.png')
-        img_side.save(f'side{id}.png')
-        
+        try:
+            img_front.save(f'front{id}.png')
+            img_side.save(f'side{id}.png')
+        except:
+            heif2png(img_front).save(f'front{id}.png', format="PNG")
+            heif2png(img_side).save(f'side{id}.png', format="PNG")
+
         if img_front.name == '':
             delete_images(id)
             flash("Can't find the front image. Please upload the front image again")

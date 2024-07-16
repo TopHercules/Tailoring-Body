@@ -4,3 +4,9 @@ python-math
 flask
 scikit-image
 mediapipe
+torch
+torchvision
+torchaudio
+pillow
+pillow_heif
+io
