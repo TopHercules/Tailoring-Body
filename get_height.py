@@ -31,7 +31,7 @@ def heif2png(file):
 
 app = Flask(__name__)
 app.secret_key = 'Tailoring App'
-@app.route('/height', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 
 def index():
     if request.method == "POST":
@@ -39,10 +39,7 @@ def index():
             flash("Please check the parameter")
         id = find_index()
         img = request.files["image"]
-        try:
-            img.save(f"image{id}.png")
-        except:
-            heif2png(img).save(f'side{id}.png', format="PNG")
+        img.save(f"image{id}.png")
         
         if request.files["image"].name == "":
             delete_images(id)
@@ -58,4 +55,4 @@ def index():
     
 if __name__ == "__main__":
     height.load_model()
-    app.run(host = "0.0.0.0", port = 8001)
+    app.run(host = "0.0.0.0", port = 8000)

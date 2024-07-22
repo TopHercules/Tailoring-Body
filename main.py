@@ -86,7 +86,7 @@ def heif2png(file):
 
 app = Flask(__name__)
 app.secret_key = 'Tailoring App'
-@app.route('/measure', methods=['GET', 'POST'])
+@app.route('/', methods=['GET', 'POST'])
 
 def index():
     if request.method == 'POST':
@@ -105,12 +105,8 @@ def index():
         img_front = request.files['front']
         img_side = request.files['side']
         
-        try:
-            img_front.save(f'front{id}.png')
-            img_side.save(f'side{id}.png')
-        except:
-            heif2png(img_front).save(f'front{id}.png', format="PNG")
-            heif2png(img_side).save(f'side{id}.png', format="PNG")
+        img_front.save(f'front{id}.png')
+        img_side.save(f'side{id}.png')
 
         if img_front.name == '':
             delete_images(id)
